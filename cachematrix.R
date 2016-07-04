@@ -1,15 +1,33 @@
-## Put comments here that give an overall description of what your
-## functions do
+# To save computation time re: inverse of matrix
 
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-
+# The following creates several functions--
+#   to set and to get the value of a matrix, and
+#   to set and to get the value of the inverse of the matrix.
+makeCacheMatrix <- function(mx = numeric()) {
+    sv <- NULL
+    setm <- function(zy) {
+        mx <<- zy
+        sv <<- NULL
+    }
+    getm <- function() mx
+    setsolve <- function(solve) sv <<- solve
+    getsolve <- function() sv
+    list(setm = setm, getm = getm,
+         setsolve = setsolve,
+         getsolve = getsolve)
 }
 
-
-## Write a short comment describing this function
+# The following gets the inverse of the matrix, if available.
+#   If not, it calculates the inverse for immediate use & stores it for later.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    sv <- x$getsolve()
+    if(!is.null(sv)) {
+        message("getting cached data")
+        return(sv)
+    }
+    data <- x$getm()
+    sv <- solve(data)
+    x$setsolve(sv)
+    sv
 }
